@@ -128,4 +128,18 @@ router.get("/verify", isAuthenticated, (req, res, next) => {
   res.status(200).json(req.payload);
 });
 
+
+// get /auth/user
+router.get("/user/search", isAuthenticated, (req,res,next)=>{
+  const {name} = req.query
+  User.find({ name: { $regex: new RegExp(name, 'i') } })
+  .then((result) => {
+    res.status(200).json(result);
+  }).catch((err) => {
+    res.status(500).json(err);
+  });
+})
+
+
+
 module.exports = router;
