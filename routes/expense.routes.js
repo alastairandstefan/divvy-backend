@@ -29,15 +29,33 @@ router.get("/:expenseId", isAuthenticated, (req, res, next) => {
   
   Expense.findOne({"$and": [{"_id": expenseId}, {"$or": [{"splits.userId": userId}, {"payer": userId}]}]})
     .populate("splits.userId", "name")
-    .then(groups => {
-      res.status(200).json(groups)
+    .populate("payer", "name")
+    .then(expense => {
+      res.status(200).json(expense)
     })
     .catch(err => {
       next(err)
     })
 });
 
-// PUT /api/groups/:groupId - Update group
+// GET /api/expenses/group/:groupId - Get expense by groupId
+
+router.get("/group/:groupId", isAuthenticated, (req, res, next) => {
+  const  { groupId }  = req.params
+  const userId = req.payload._id;
+  
+  Expense.find({"$and": [{"group": groupId}, {"$or": [{"splits.userId": userId}, {"payer": userId}]}]})
+    .populate("splits.userId", "name")
+    .populate("payer", "name")
+    .then(expenses => {
+      res.status(200).json(expenses)
+    })
+    .catch(err => {
+      next(err)
+    })
+});
+
+// PUT /api/expenses/:expenseId - Update expense
 
 router.put("/:expenseId", isAuthenticated, (req, res, next) => {
   const { expenseId }  = req.params;
@@ -49,6 +67,7 @@ router.put("/:expenseId", isAuthenticated, (req, res, next) => {
 
   Expense.findOneAndUpdate({"$and": [{"_id": expenseId}, {"$or": [{"splits.userId": userId}, {"payer": userId}]}]}, updatedExpense, {new: true})
     .populate("splits.userId", "name")
+    .populate("payer", "name")
     .then(updatedExpense => {
       res.status(200).json(updatedExpense)
     })
