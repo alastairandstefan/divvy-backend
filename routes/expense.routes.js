@@ -20,6 +20,23 @@ router.post('/', isAuthenticated, (req, res, next) => {
 
 })
 
+// GET /api/expenses/user/- Get expenses of user
+
+router.get("/user", isAuthenticated, (req, res, next) => {
+
+  const userId = req.payload._id;
+  
+  Expense.find({"$or": [{"splits.userId": userId}, {"payer": userId}]})
+    .populate("splits.userId", "name")
+    .populate("payer", "name")
+    .then(expenses => {
+      res.status(200).json(expenses)
+    })
+    .catch(err => {
+      next(err)
+    })
+});
+
 
 // GET /api/expenses/:expenseId - Get expense by ID
 
@@ -38,7 +55,7 @@ router.get("/:expenseId", isAuthenticated, (req, res, next) => {
     })
 });
 
-// GET /api/expenses/group/:groupId - Get expense by groupId
+// GET /api/expenses/group/:groupId - Get expenses by groupId
 
 router.get("/group/:groupId", isAuthenticated, (req, res, next) => {
   const  { groupId }  = req.params
@@ -54,6 +71,8 @@ router.get("/group/:groupId", isAuthenticated, (req, res, next) => {
       next(err)
     })
 });
+
+
 
 // PUT /api/expenses/:expenseId - Update expense
 
