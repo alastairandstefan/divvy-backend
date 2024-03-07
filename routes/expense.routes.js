@@ -43,7 +43,7 @@ router.get("/group/:groupId", isAuthenticated, (req, res, next) => {
   const  { groupId }  = req.params
   const userId = req.payload._id;
   
-  Expense.findOne({"$and": [{"group": GroupDetailsPage}, {"$or": [{"splits.userId": userId}, {"payer": userId}]}]})
+  Expense.find({"$and": [{"group": groupId}, {"$or": [{"splits.userId": userId}, {"payer": userId}]}]})
     .populate("splits.userId", "name")
     .then(expenses => {
       res.status(200).json(expenses)
