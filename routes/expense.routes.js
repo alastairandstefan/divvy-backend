@@ -3,7 +3,6 @@ const router = express.Router();
 const Expense = require("../models/Expense.model")
 const mongoose = require('mongoose');
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
-const { default: GroupDetailsPage } = require("../../divvy-frontend/src/pages/GroupDetailsPage.jsx");
 
 
 // POST /api/expenses - Create new expense
