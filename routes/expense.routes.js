@@ -95,6 +95,21 @@ router.put("/:expenseId", isAuthenticated, (req, res, next) => {
     })
 });
 
+// DELETE /api/expenses/:expenseId - Delete expense
+
+router.delete("/:expenseId", isAuthenticated, (req, res, next) => {
+  const { expenseId }  = req.params;
+  const userId = req.payload._id;
+
+  Expense.findOneAndDelete({"$and": [{"_id": expenseId}, {"$or": [{"splits.userId": userId}, {"payer": userId}]}]})
+    .then(deletedExpense => {
+      res.status(200).json(deletedExpense)
+    })
+    .catch(err => {
+      next(err)
+    })
+});
+
 
 
 
