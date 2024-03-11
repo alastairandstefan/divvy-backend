@@ -73,4 +73,19 @@ router.post('/', isAuthenticated, (req, res, next) => {
 
 })
 
+// DELETE /api/groups/:groupId - Delete group
+
+router.delete("/:groupId", isAuthenticated, (req, res, next) => {
+  const { groupId }  = req.params;
+  const userId = req.payload._id;
+
+  Group.findOneAndDelete({$and: [{_id: groupId}, {members: userId}]})
+    .then(deletedGroup => {
+      res.status(200).json(deletedGroup)
+    })
+    .catch(err => {
+      next(err)
+    })
+});
+
 module.exports = router;
