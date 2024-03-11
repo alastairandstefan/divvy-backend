@@ -48,7 +48,12 @@ router.post("/signup", (req, res, next) => {
     .then((foundUser) => {
       // If the user with the same email already exists, send an error response
       if (foundUser) {
-        res.status(400).json({ message: "User already exists." });
+        res
+          .status(400)
+          .json({
+            message: "User already exists. Try logging in.",
+            loginLink: "/auth/login",
+          });
         return;
       }
 
@@ -68,8 +73,19 @@ router.post("/signup", (req, res, next) => {
       // Create a new object that doesn't expose the password
       const user = { email, name, _id };
 
-      // Send a json response containing the user object
-      res.status(201).json({ user: user });
+      // After successfully creating the user, generate a JWT token
+      const payload = {
+        _id: createdUser._id,
+        email: createdUser.email,
+        name: createdUser.name,
+      };
+      const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
+        algorithm: "HS256",
+        expiresIn: "6h",
+      });
+      
+      // Send a json response containing the user object and auth token
+      res.status(201).json({ user: user, authToken: authToken });
     })
     .catch((err) => next(err)); // In this case, we send error handling to the error handling middleware.
 });
@@ -128,19 +144,17 @@ router.get("/verify", isAuthenticated, (req, res, next) => {
   res.status(200).json(req.payload);
 });
 
-
 // get /auth/user
-router.get("/users/search", isAuthenticated, (req,res,next)=>{
-  const {email} = req.query
+router.get("/users/search", isAuthenticated, (req, res, next) => {
+  const { email } = req.query;
   console.log(email);
   User.find({ email })
-  .then((result) => {
-    res.status(200).json(result);
-  }).catch((err) => {
-    res.status(500).json(err);
-  });
-})
-
-
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(500).json(err);
+    });
+});
 
 module.exports = router;
