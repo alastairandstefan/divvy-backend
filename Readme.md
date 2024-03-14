@@ -37,35 +37,33 @@ Divvy is a full-stack application designed to help users manage their finances m
    npm start
    ```
 
+
 ## API Documentation
 
-The backend provides several API endpoints for managing users, groups, and expenses. The base URL for all API requests is `http://localhost:3000/api`.
+The backend provides several API endpoints for managing users, groups, and expenses. The base URL for all API requests is `http://localhost:3000`.
 
 ### Authentication
 
-- **POST /auth/register**: Register a new user.
+- **POST /auth/signup**: Register a new user.
 - **POST /auth/login**: Authenticate a user and return a JWT token.
 - **GET /auth/verify**: Verify a user's JWT token.
-
-### Users
-
-- **GET /users**: Retrieve a list of all users.
-- **GET /users/:id**: Retrieve a specific user by ID.
-- **PUT /users/:id**: Update a specific user by ID.
-- **DELETE /users/:id**: Delete a specific user by ID.
+- **GET /auth/users/search**: Search for users by email.
 
 ### Groups
 
-- **GET /groups**: Retrieve a list of all groups.
-- **POST /groups**: Create a new group.
-- **GET /groups/:id**: Retrieve a specific group by ID.
-- **PUT /groups/:id**: Update a specific group by ID.
-- **DELETE /groups/:id**: Delete a specific group by ID.
+- **GET /api/groups/user**: Retrieve all groups of the authenticated user.
+- **POST /api/groups**: Create a new group.
+- **GET /api/groups/:groupId**: Retrieve a specific group by ID.
+- **PUT /api/groups/:groupId**: Update a specific group by ID.
+- **DELETE /api/groups/:groupId**: Delete a specific group by ID.
 
 ### Expenses
 
-- **GET /expenses**: Retrieve a list of all expenses.
-- **POST /expenses**: Create a new expense.
-- **GET /expenses/:id**: Retrieve a specific expense by ID.
-- **PUT /expenses/:id**: Update a specific expense by ID.
-- **DELETE /expenses/:id**: Delete a specific expense by ID.
+- **GET /api/expenses/user**: Retrieve all expenses of the authenticated user.
+- **POST /api/expenses**: Create a new expense.
+- **GET /api/expenses/:expenseId**: Retrieve a specific expense by ID.
+- **PUT /api/expenses/:expenseId**: Update a specific expense by ID.
+- **DELETE /api/expenses/:expenseId**: Delete a specific expense by ID.
+- **GET /api/expenses/group/:groupId**: Retrieve all expenses of a specific group by ID.
+
+Please note that all routes that require authentication should include a valid JWT token in the `Authorization` header of the request.
