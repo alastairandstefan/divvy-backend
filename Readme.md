@@ -74,7 +74,7 @@ You can find the Repo to the frontend here: [Frontend](https://github.com/alasta
 
 ### Demo
 
-Here you can find the frontend demo of the project:
+Here you can find the frontend demo of the project: [<kbd> <br> View Demo <br> </kbd>](https://divvy-frontend.netlify.app/dashboard)
 
-[<kbd> <br> View Demo <br> </kbd>](https://divvy-frontend.netlify.app/dashboard)
+
 
