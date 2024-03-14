@@ -67,3 +67,14 @@ The backend provides several API endpoints for managing users, groups, and expen
 - **GET /api/expenses/group/:groupId**: Retrieve all expenses of a specific group by ID.
 
 Please note that all routes that require authentication should include a valid JWT token in the `Authorization` header of the request.
+
+## Divvy Frontend
+
+You can find the Repo to the frontend here: [Frontend](https://github.com/alastairandstefan/divvy-frontend)
+
+### Demo
+
+Here you can find the frontend demo of the project:
+
+[<kbd> <br> View Demo <br> </kbd>](https://divvy-frontend.netlify.app/dashboard)
+
